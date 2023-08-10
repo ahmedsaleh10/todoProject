@@ -27,6 +27,29 @@
           What's up, <input type="text" id="name" placeholder="Name here" />
         </h2>
       </header>
+
+      <section class="create-todo">
+        <h3>Create A Todo</h3>
+        <form id="new-todo-form">
+            <h4>What's in your todo list</h4>
+            <input type="text" name="content" id="content" placeholder="e.g. make a video"/>
+            <h4>Pick a category</h4>
+            <div class="options">
+                <label>
+                    <input type="radio" name="category" id="category1" value="important"/>
+                    <span class="bubble business"></span>
+                    <div>Importnant</div>
+                </label>
+                <label>
+                    <input type="radio" name="category" id="category2" value="not-important"/>
+                    <span class="bubble business"></span>
+                    <div>Not importnant</div>
+                </label>
+            </div>
+            <input type="submit" value="Add todo"/>
+        </form>
+    </section>
+    
     </main>
 
     <script src="script.js"></script>
