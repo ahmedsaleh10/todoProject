@@ -23,6 +23,7 @@ input:not([type="radio"]):not([type="checkbox"]),button {
     outline: none;
     background: none;
     cursor: initial;
+    width: 90%;
 }
 
 body {
