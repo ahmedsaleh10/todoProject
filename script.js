@@ -84,3 +84,42 @@ const DisplayTodos = (todos) => {
         })
     })
 }
+
+window.addEventListener("load", () => {
+    var todos = Array.from(JSON.parse(localStorage.getItem('todos'))) || []
+    const nameInput = document.querySelector('#name')
+    const newTodoForm = document.querySelector('#new-todo-form')
+    const username = localStorage.getItem('username') || ''
+    const searchInput = document.querySelector('#search')
+
+    searchInput.addEventListener("input", (e) => {
+        const todosArray = Array.from(JSON.parse(localStorage.getItem('todos')))
+        const searchValue = e.target.value.toLowerCase()
+        const filterdArray = todosArray.filter(item => item.todo.toLowerCase().includes(searchValue) )
+        DisplayTodos(filterdArray)
+    })
+
+    nameInput.value = username;
+    nameInput.addEventListener('change', e => {
+        localStorage.setItem('username', e.target.value)
+    })
+    
+    newTodoForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const todo = {
+            id : todos.length + 1,
+            todo : e.target.elements.content.value,
+            completed: false,
+        }
+        if (todo.todo){
+            todos.push(todo)
+            localStorage.setItem('todos',JSON.stringify(todos))
+            e.target.reset(); 
+        }
+        else{
+            alert("The todo field is empty");
+        }
+        DisplayTodos(todos);
+    })
+    DisplayTodos(todos);
+})
