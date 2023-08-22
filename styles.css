@@ -52,8 +52,43 @@ h4 {
     margin-bottom: 0.5rem;
 }
 
+.greeting {
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (max-width:690px) {
+    .greeting {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .greeting .search-wrapper {
+        width: 100%;
+    }
+    .app .greeting .title {
+        width: 100%;
+    }
+}
+
 .greeting .title {
     display: flex;
+    align-items: center;
+    width: 47%;
+}
+
+ .greeting .search-wrapper .search-bar {
+    font-size: 1.125rem;
+    padding: 1rem 1.5rem;
+    color: var(--dark);
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    width: 100%;
+}
+
+.search-wrapper {
+    width: 53%;
 }
 
 .greeting .title input {
