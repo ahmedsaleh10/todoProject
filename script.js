@@ -84,15 +84,15 @@ const DisplayTodos = (todos) => {
         input.addEventListener('click', e => {
             todo.completed = e.target.checked
             localStorage.setItem('todos',JSON.stringify(todos))
-
             if(todo.completed) {
                 todoItem.classList.add('done');
             }
             else{
                 todoItem.classList.remove('done');
             }
-            DisplayTodos(todos);
+            updateTodoStatus(todo.id,todo.completed)
         })
+        
         edit.addEventListener("click", ()=>{
             const input = content.querySelector('input')
             input.removeAttribute('readonly')
@@ -106,18 +106,48 @@ const DisplayTodos = (todos) => {
         })
 
         deleteButton.addEventListener('click', (e) => {
-            const todosArray = Array.from(JSON.parse(localStorage.getItem('todos')))
-            const searchInput = document.querySelector('#search')
-            const searchValue =search.value.toLowerCase()
-            const newTodos = todosArray.filter(item => JSON.stringify(item) !== JSON.stringify(todo)  )
-            localStorage.setItem('todos', JSON.stringify(newTodos));
-            if(searchValue){
-                const newTodosArray = newTodos.filter(item => item.todo.toLowerCase().includes(searchValue) )
-                DisplayTodos(newTodosArray)
-            }
-            else{
-                DisplayTodos(newTodos);
-            }
+            deleteTodoItem(todo.id)
         })
     })
 }
+
+async function updateTodoStatus(id, completed) {
+    var todos = Array.from(JSON.parse(localStorage.getItem('todos'))) || []
+    try {
+      await fetch(`https://dummyjson.com/todos/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          completed,
+        }),
+      });
+      const updatedTodoList = todos.map((todo) => todo.id === id ? { ...todo, completed } : todo );
+      DisplayTodos(updatedTodoList);
+    } catch (error) {
+      console.error("Error updating the TODO item status:", error);
+    }
+  }
+
+async function deleteTodoItem(id) {
+    const todos = Array.from(JSON.parse(localStorage.getItem('todos')))
+    const searchInput = document.querySelector('#search')
+    const searchValue =searchInput.value.toLowerCase()
+    try {
+      await fetch(`https://dummyjson.com/todos/${id}`, {
+        method: "DELETE",
+      });
+      const updatedTodoList = todos.filter((todo) => todo.id !== id);
+      localStorage.setItem('todos', JSON.stringify(updatedTodoList));
+      if(searchValue){
+        const newTodosArray = todos.filter(item => item.todo.toLowerCase().includes(searchValue) )
+        DisplayTodos(newTodosArray)
+    }
+    else{
+        DisplayTodos(updatedTodoList);
+    }
+    } catch (error) {
+      console.error("Error deleting the TODO item:", error);
+    }
+  }  
